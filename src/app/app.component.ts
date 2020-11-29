@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-// import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -13,19 +13,15 @@ export class AppComponent {
   isCross = false;
   itemArray: string[] = new Array(9).fill('empty');
 
-  constructor() {}
+  constructor(private toastr: ToastrService) {}
 
   handleClick(itemNumber: number) {
-    if (this.winMessage) {
-      // return this.toastr.success(this.winMessage);
-    }
-
+    
     if (this.itemArray[itemNumber] === 'empty') {
       this.itemArray[itemNumber] = this.isCross ? 'cross' : 'circle';
-
       this.isCross = !this.isCross;
     } else {
-      // return this.toastr.info('Already filled');
+      return this.toastr.info('Already filled');
     }
 
     this.checkIsWinner();
@@ -81,6 +77,9 @@ export class AppComponent {
       this.itemArray[4] === this.itemArray[6]
     ) {
       this.winMessage = `${this.itemArray[2]} won`;
+    }
+    if (this.winMessage) {
+      return this.toastr.success(this.winMessage);
     }
   };
 
